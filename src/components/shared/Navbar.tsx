@@ -32,7 +32,12 @@ const Navbar = () => {
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
           <div className="flex items-center gap-1">
-              <Image src={assets.svg.logoFinal} width={30} height={30} alt="logo" />
+            <Image
+              src={assets.svg.logoFinal}
+              width={30}
+              height={30}
+              alt="logo"
+            />
             <div className="flex-shrink-0">
               <Link href="/" className="text-xl font-bold">
                 Medi
