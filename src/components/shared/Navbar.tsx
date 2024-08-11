@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Menu, X, LogIn } from "lucide-react"; // Import the icons you need
+import { Menu, X, LogIn, User } from "lucide-react"; // Import the icons you need
 import Link from "next/link";
 import PrimaryButton from "../ui/PrimaryButton";
 import Image from "next/image";
@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const menuItems = [
     { label: "Home", path: "/", show: true },
-    { label: "Blogs", path: "/blogs", show: true },
+    { label: "Shop", path: "/shop", show: true },
     { label: "About Us", path: "/about-us", show: true },
   ];
 
@@ -22,7 +22,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg fixed top-0 left-0 w-full z-10">
+    <nav className="bg-white shadow fixed top-0 left-0 w-full z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <button
@@ -32,7 +32,7 @@ const Navbar = () => {
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
           <div className="flex items-center gap-1">
-              <Image src={assets.svg.logo} width={30} height={30} alt="logo" />
+              <Image src={assets.svg.logoFinal} width={30} height={30} alt="logo" />
             <div className="flex-shrink-0">
               <Link href="/" className="text-xl font-bold">
                 Medi
@@ -62,9 +62,9 @@ const Navbar = () => {
             <div>
               <Link href="/login">
                 <PrimaryButton
-                  icon={<LogIn className="h-5 w-5" />}
+                  icon={<User className="h-5 w-5" />}
                   text="Login"
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-500 hover:bg-blue-600"
                 />
               </Link>
             </div>
