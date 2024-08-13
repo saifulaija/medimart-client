@@ -8,6 +8,7 @@ import Image from "next/image";
 import assets from "@/app/assets";
 import AuthButton from "../authButton/AuthButton";
 import { getUserInfo } from "@/services/authServices";
+import { usePathname } from "next/navigation";
 type UserType = {
   id: string;
   name: string;
@@ -17,6 +18,7 @@ type UserType = {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const activePath=usePathname()
 
 
 const [user, setUser] = useState<UserType | null>(null);
@@ -32,10 +34,10 @@ useEffect(() => {
   const menuItems = [
     { label: "Home", path: "/", show: true },
     { label: "Shop", path: "/shop", show: true },
-    { label: "About Us", path: "/about-us", show: true },
+    { label: "About Us", path: "/about_us", show: true },
     {
       label: "Dashboard",
-      path: `/dashboard/${user?.role || "default"}`,
+      path: `/dashboard/${user?.role}`,
       show: user?.role,
     },
   ];
@@ -69,6 +71,7 @@ useEffect(() => {
             </div>
           </div>
           <div className="hidden md:block">
+          
             <div className="ml-10 flex items-baseline space-x-4">
               {menuItems.map(
                 (item) =>
@@ -76,8 +79,16 @@ useEffect(() => {
                     <Link
                       key={item.label}
                       href={item.path}
-                      className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                      className={`relative px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ease-in-out ${
+                        activePath === item.path
+                          ? "text-blue-600"
+                          : "text-gray-700 hover:text-blue-600"
+                      }`}
                     >
+                      {/* Active item indicator */}
+                      {activePath === item.path && (
+                        <span className="absolute inset-x-0 bottom-0 border-b-2 border-blue-600"></span>
+                      )}
                       {item.label}
                     </Link>
                   )
@@ -89,7 +100,7 @@ useEffect(() => {
             <PrimaryButton
               icon={<ShoppingBag className="h-5 w-5" />}
               text={3250}
-              className="bg-none" // Customize the background color
+              className="bg-none rounded-lg" // Customize the background color
               badge={3} // Number of products added
             />
             <div className="sm:block hidden">
