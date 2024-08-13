@@ -10,7 +10,10 @@ interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 // Use forwardRef to allow passing a ref to the button
 const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
-  ({ loading = false, disabled, className, children, ...props }, ref) => {
+  ({ loading, disabled, className, children, ...props }, ref) => {
+
+    console.log(loading);
+    
     return (
       <button
         ref={ref}
@@ -30,6 +33,6 @@ const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
   }
 );
 
-LoadingButton.displayName = "LoadingButton"; // for better debugging and React DevTools
+LoadingButton.displayName = "LoadingButton"; 
 
 export default LoadingButton;
