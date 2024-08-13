@@ -19,28 +19,43 @@ type UserType = {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const activePath=usePathname()
+  
 
 
 const [user, setUser] = useState<UserType | null>(null);
 
-useEffect(() => {
-  // Fetch user data and update state
-  const fetchedUser = getUserInfo();
-  if (fetchedUser) {
-    setUser(fetchedUser);
-  }
-}, []);
+// useEffect(() => {
+//   // Fetch user data and update state
+//   const fetchedUser = getUserInfo();
+//   if (fetchedUser) {
+//     setUser(fetchedUser);
+//   }
+// }, []);
 
-  const menuItems = [
-    { label: "Home", path: "/", show: true },
-    { label: "Shop", path: "/shop", show: true },
-    { label: "About Us", path: "/about_us", show: true },
-    {
-      label: "Dashboard",
-      path: `/dashboard/${user?.role}`,
-      show: user?.role,
-    },
-  ];
+console.log(user?.role);
+
+const [menuItems, setMenuItems] = useState([
+  { label: "Home", path: "/", show: true },
+  { label: "Shop", path: "/shop", show: true },
+  { label: "About Us", path: "/about_us", show: true },
+  { label: "Dashboard", path: "", show: false },
+]);
+
+    useEffect(() => {
+      // Fetch user data and update state
+      const fetchedUser = getUserInfo();
+      if (fetchedUser) {
+        setUser(fetchedUser);
+        setMenuItems((prevItems) => [
+          ...prevItems.slice(0, 3),
+          {
+            label: "Dashboard",
+            path: `/dashboard/${fetchedUser.role}`,
+            show: !!fetchedUser.role,
+          },
+        ]);
+      }
+    }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

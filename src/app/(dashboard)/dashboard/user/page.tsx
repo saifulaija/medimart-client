@@ -1,7 +1,7 @@
 import React from "react";
 
-const UserDashboardPage = () => {
+function UserDashboardPage() {
   return <div>UserDashboardPage</div>;
-};
+}
 
 export default UserDashboardPage;

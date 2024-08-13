@@ -6,14 +6,16 @@ type Role = keyof typeof roleBasedPrivateRoutes;
 const AuthRoutes = ["/login", "/signup"];
 const commonPrivateRoutes = ["/dashboard", "/dashboard/change-password"];
 const roleBasedPrivateRoutes = {
-  ADMIN: [/^\/dashboard\/admin/],
-  USER: [/^\/dashboard\/user/],
+  admin: [/^\/dashboard\/admin/],
+  user: [/^\/dashboard\/user/],
 };
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = cookies().get("accessToken")?.value;
+  console.log(pathname);
+  
   if (!accessToken) {
     if (AuthRoutes.includes(pathname)) {
       return NextResponse.next();
