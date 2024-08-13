@@ -6,7 +6,7 @@ import assets from "@/app/assets";
 import LoginForm from "./LoginForm";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Login | MediMart",
 };
 
 export default function Page() {

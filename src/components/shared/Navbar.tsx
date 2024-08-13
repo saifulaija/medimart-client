@@ -6,7 +6,7 @@ import Link from "next/link";
 import PrimaryButton from "../ui/PrimaryButton";
 import Image from "next/image";
 import assets from "@/app/assets";
-
+import AuthButton from "../authButton/AuthButton";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,16 +63,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center -mr-2">
-            {/* Login Button */}
-            <div>
-              <Link href="/login">
-                <PrimaryButton
-                  icon={<User className="h-5 w-5" />}
-                  text="Login"
-                  className="bg-blue-500 hover:bg-blue-600"
-                />
-              </Link>
-            </div>
+            <AuthButton />
             {/* Hamburger Menu Button */}
           </div>
         </div>

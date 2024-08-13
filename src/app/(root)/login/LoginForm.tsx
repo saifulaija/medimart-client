@@ -6,19 +6,16 @@ import { Eye, EyeOff } from "lucide-react";
 import LoadingButton from "@/components/ui/LoadingButton";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { modifyPayload } from "@/utils/modifyPayload";
 import { toast } from "react-toastify";
 import { signUpUser } from "@/services/actions/signupUser";
-import { uploadImage } from "@/utils/imgbb";
 import { useRouter } from "next/navigation";
-
+import { storeUserInfo } from "@/services/authServices";
+import { signInUser } from "@/services/actions/loginUser";
 const LoginSchema = z.object({
-
   email: z.string().email({ message: "Please enter a valid email" }),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters" }),
- 
 });
 
 type FormFields = z.infer<typeof LoginSchema>;
@@ -36,30 +33,23 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<FormFields>({
     defaultValues: {
-    
       email: "",
       password: "",
-      
     },
     resolver: zodResolver(LoginSchema),
   });
 
   const onSubmit = async (values: FieldValues) => {
     setIsLoading(true);
-    if (values.image && values.image.length > 0) {
-      const url = await uploadImage(values.image[0]);
-      values.image = url;
-    } else {
-      values.image = "";
-    }
 
     try {
-      const res = await signUpUser(values);
+      const res = await signInUser(values);
       console.log(res);
 
-      if (res?.success) {
-        toast("An OTP has been sent to your email address.");
-        router.push("/otp");
+      if (res?.data?.accessToken) {
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+        toast("User login successfully");
+        router.refresh();
       } else {
         setError(res?.message || "An unexpected error occurred.");
       }
@@ -72,8 +62,7 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-     
-
+      <p className="text-red-500">{error}</p>
       <div className="mb-1">
         <label
           htmlFor="email"
@@ -126,8 +115,6 @@ const LoginForm = () => {
           </p>
         )}
       </div>
-
-     
 
       <LoadingButton
         type="submit"
