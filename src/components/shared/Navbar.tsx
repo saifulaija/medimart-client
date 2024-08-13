@@ -1,20 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
-import { Menu, X, LogIn, User } from "lucide-react"; // Import the icons you need
+import React, { useState, useEffect } from "react";
+import { Menu, X, ShoppingBag } from "lucide-react"; // Import the icons you need
 import Link from "next/link";
 import PrimaryButton from "../ui/PrimaryButton";
 import Image from "next/image";
 import assets from "@/app/assets";
 import AuthButton from "../authButton/AuthButton";
+import { getUserInfo } from "@/services/authServices";
+type UserType = {
+  id: string;
+  name: string;
+  role: string; // Define the expected properties
+  // Add other properties as needed
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+
+const [user, setUser] = useState<UserType | null>(null);
+
+useEffect(() => {
+  // Fetch user data and update state
+  const fetchedUser = getUserInfo();
+  if (fetchedUser) {
+    setUser(fetchedUser);
+  }
+}, []);
 
   const menuItems = [
     { label: "Home", path: "/", show: true },
     { label: "Shop", path: "/shop", show: true },
     { label: "About Us", path: "/about-us", show: true },
+    {
+      label: "Dashboard",
+      path: `/dashboard/${user?.role || "default"}`,
+      show: user?.role,
+    },
   ];
 
   const toggleMenu = () => {
@@ -62,9 +85,16 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="flex items-center -mr-2">
-            <AuthButton />
-            {/* Hamburger Menu Button */}
+          <div className="flex items-center gap-4">
+            <PrimaryButton
+              icon={<ShoppingBag className="h-5 w-5" />}
+              text={3250}
+              className="bg-none" // Customize the background color
+              badge={3} // Number of products added
+            />
+            <div className="sm:block hidden">
+              <AuthButton />
+            </div>
           </div>
         </div>
       </div>
@@ -85,6 +115,7 @@ const Navbar = () => {
                   </Link>
                 )
             )}
+            <AuthButton />
           </div>
         </div>
       )}

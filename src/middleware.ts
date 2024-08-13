@@ -7,9 +7,7 @@ const AuthRoutes = ["/login", "/signup"];
 const commonPrivateRoutes = ["/dashboard", "/dashboard/change-password"];
 const roleBasedPrivateRoutes = {
   ADMIN: [/^\/dashboard\/admin/],
-  BLOGGER: [/^\/dashboard\/blogger/],
-  MODERATOR: [/^\/dashboard\/moderator/],
-  SUPER_ADMIN: [/^\/dashboard\/super_admin/],
+  USER: [/^\/dashboard\/user/],
 };
 
 // This function can be marked `async` if using `await` inside
