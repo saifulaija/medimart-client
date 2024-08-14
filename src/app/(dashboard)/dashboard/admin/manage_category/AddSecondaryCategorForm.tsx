@@ -8,104 +8,120 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "react-toastify";
-import { signUpUser } from "@/services/actions/signupUser";
 import { uploadImage } from "@/utils/imgbb";
 import { useRouter } from "next/navigation";
+import { useCreateCategoryMutation } from "@/redux/api/features/categoriyApi";
 
 const SignUpSchema = z.object({
-  categoryName: z.string().min(4, { message: "Please enter category name" }),
+  name: z.string().min(4, { message: "Please enter category name" }),
+  slug: z.string().min(2, { message: "Please enter category name" }),
 
-  image: z.any(),
+  thumbnail: z.any(),
 });
 
 type FormFields = z.infer<typeof SignUpSchema>;
 
-const AddCategoryForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+const AddSecondaryCategoryForm = () => {
+  const [createCategory, { isLoading }] = useCreateCategoryMutation();
 
   const {
     handleSubmit,
     register,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<FormFields>({
     defaultValues: {
-      categoryName: "",
+      name: "",
 
-      image: "",
+      thumbnail: "",
     },
     resolver: zodResolver(SignUpSchema),
   });
 
   const onSubmit = async (values: FieldValues) => {
-    setIsLoading(true);
-    if (values.image && values.image.length > 0) {
-      const url = await uploadImage(values.image[0]);
-      values.image = url;
+    if (values.thumbnail && values.thumbnail.length > 0) {
+      const url = await uploadImage(values.thumbnail[0]);
+      values.thumbnail = url;
     } else {
-      values.image = "";
+      values.thumbnail = "";
     }
 
     try {
-      const res = await signUpUser(values);
+      const res = await createCategory(values);
       console.log(res);
 
-      if (res?.success) {
-        toast("An OTP has been sent to your email address.");
-        router.push("/otp");
+      if (res?.data) {
+        toast("Category created successfully");
+        reset();
       } else {
-        setError(res?.message || "An unexpected error occurred.");
+        toast.error("Something went wrong");
       }
     } catch (err: any) {
-      setError(err?.message || "An unexpected error occurred.");
-    } finally {
-      setIsLoading(false);
+      toast.error(err?.message || "An unexpected error occurred.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-1">
+      <div className="mb-2">
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 text-start"
         >
           CategoryName
         </label>
         <input
-          {...register("categoryName")}
+          {...register("name")}
           type="text"
           id="name"
           className="block w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400"
           placeholder="Enter your name"
         />
-        {errors.categoryName?.message && (
+        {errors.name?.message && (
           <p className="text-red-500 text-sm mt-1">
-            {String(errors.categoryName.message)}
+            {String(errors.name.message)}
+          </p>
+        )}
+      </div>
+      <div className="mb-2">
+        <label
+          htmlFor="slug"
+          className="block text-sm font-medium text-gray-700 text-start"
+        >
+          CategoryName
+        </label>
+        <input
+          {...register("slug")}
+          type="text"
+          id="slug"
+          className="block w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400"
+          placeholder="Enter your name"
+        />
+        {errors.slug?.message && (
+          <p className="text-red-500 text-sm mt-1">
+            {String(errors.slug.message)}
           </p>
         )}
       </div>
 
       <div className="mb-2">
         <label
-          htmlFor="image"
-          className="block text-sm font-medium text-gray-700"
+          htmlFor=" thumbnail"
+          className="block text-sm font-medium text-gray-700 text-start"
         >
           Category Image
         </label>
         <input
-          {...register("image")}
+          {...register("thumbnail")}
           type="file"
-          id="image"
-          accept="image/*"
+          id=" thumbnail"
+          accept=" thumbnail/*"
           className="block w-full mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400"
         />
-        {errors.image?.message && (
+        {errors.thumbnail?.message && (
           <p className="text-red-500 text-sm mt-1">
-            {String(errors.image.message)}
+            {String(errors.thumbnail.message)}
           </p>
         )}
       </div>
@@ -115,10 +131,10 @@ const AddCategoryForm = () => {
         className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         loading={isLoading}
       >
-        Create Category
+        Create Secondary Category
       </LoadingButton>
     </form>
   );
 };
 
-export default AddCategoryForm;
+export default AddSecondaryCategoryForm;

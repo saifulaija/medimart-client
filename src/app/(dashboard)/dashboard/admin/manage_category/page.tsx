@@ -2,7 +2,7 @@
 'use client'
 import Modal from "@/components/shared/Modal";
 import { useState } from "react";
-import AddCategoryForm from "./AddCategoryForm";
+import AddCategoryForm from "./AddPrimaryCategoryForm";
 
 
 
@@ -13,19 +13,32 @@ export default function Home() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div >
-      <button
-        onClick={openModal}
-        className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-      >
-        Add category
-      </button>
+    <div>
+      <div className="md:flex items-center gap-10">
+        <button
+          onClick={openModal}
+          className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        >
+          Add Primary Category
+        </button>
+        <button
+          onClick={openModal}
+          className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        >
+          Add Secondary Category
+        </button>
+        <button
+          onClick={openModal}
+          className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        >
+          Add Tertiary Category
+        </button>
+      </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div className="p-4 text-center">
+          <AddCategoryForm />
 
-         <AddCategoryForm/>
-   
           {/* <button
             onClick={closeModal}
             className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
