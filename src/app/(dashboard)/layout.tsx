@@ -1,5 +1,6 @@
 
 import DashboardLayout from "@/components/dashBoard/DashboardLayout";
+import MainDashboard from "@/components/dashBoard/MainDashboard";
 import { Metadata } from "next";
 import React from "react";
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 const DashboardLayoutNew = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
-      <DashboardLayout>{children}</DashboardLayout>
+      <MainDashboard>{children}</MainDashboard>
     </div>
   );
 };

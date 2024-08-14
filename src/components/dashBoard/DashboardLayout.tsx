@@ -4,7 +4,7 @@ import Sidebar from "./SideBar";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative min-h-screen md:flex">
-     <Sidebar/>
+     {/* <Sidebar/> */}
 
       <div className="flex-1 md:ml-64">
         <div className="p-5">

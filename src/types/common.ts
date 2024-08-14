@@ -56,3 +56,14 @@ export interface UpdateFlatDialogProps {
   onConfirm: () => void;
   onCancel: () => void;
 }
+
+
+// types/ModalProps.ts
+import { ReactNode } from 'react';
+
+export interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    children: ReactNode;
+}
+
